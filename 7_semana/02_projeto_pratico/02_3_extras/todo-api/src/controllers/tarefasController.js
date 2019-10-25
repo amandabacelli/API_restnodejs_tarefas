@@ -30,6 +30,46 @@ exports.getConcluidos = (req, res) => {
   );
 };
 
+exports.getDiferencaDias = (req, res) => {
+  tarefas.forEach(element => {
+    // element.outraChave = "a";
+    console.log(
+      Math.abs(
+        new Date(
+          element.dataConclusao.split("/")[2],
+          element.dataConclusao.split("/")[1],
+          element.dataConclusao.split("/")[0]
+        )
+      )
+    );
+    const diferencaTempo = Math.abs(
+      new Date(
+        element.dataConclusao.split("/")[2],
+        element.dataConclusao.split("/")[1],
+        element.dataConclusao.split("/")[0]
+      ) -
+        new Date(
+          element.dataInclusao.split("/")[2],
+          element.dataInclusao.split("/")[1],
+          element.dataInclusao.split("/")[0]
+        )
+    );
+    const diferencaDias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+    element.tempoLevado = diferencaDias;
+    // new Date(
+    //   element.dataConclusao.split("/")[2],
+    //   element.dataConclusao.split("/")[1],
+    //   element.dataConclusao.split("/")[0]
+    // ) -
+    // new Date(
+    //   element.dataInclusao.split("/")[2],
+    //   element.dataInclusao.split("/")[1],
+    //   element.dataInclusao.split("/")[0]
+    // );
+  });
+  res.status(200).send(tarefas);
+};
+
 exports.getMaisRecentes = (req, res) => {
   // tarefas.forEach(element => {
   //   console.log(element.dataConclusao)
